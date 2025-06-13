@@ -69,6 +69,7 @@ class Connect4Game:
         return [c for c in range(self.COLS) if self.is_valid_move(c)]
 
 
+
 class Connect4GUI:
     WHITE = (255, 255, 255)
     BLACK = (0, 0, 0)
