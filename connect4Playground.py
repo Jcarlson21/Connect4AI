@@ -1,24 +1,27 @@
 from connect4 import Connect4GUI, Connect4Game
 from player import RandomPlayer, MousePlayer
+from dqnPlayer import DQNPlayer
 
-'''
+
 # Uncomment this section to play against someone bad
-player1 = RandomPlayer(1)
+player1 = DQNPlayer(1, 'connect4_self.pth')
 player2 = MousePlayer(2)
 game_gui = Connect4GUI(player1, player2)
 game_gui.run()
-'''
 
-'''
+
 # Uncomment this section for GUI of AI vs AI
-player1 = RandomPlayer(1)
+player1 = DQNPlayer(1,"connect4_self.pth")
+print('hi jake')
 player2 = RandomPlayer(2)
-game_gui = Connect4GUI(player1, player2)
-game_gui.run()
-'''
 
+'''
+for i in range(10):
+    game_gui = Connect4GUI(player1, player2)
+    game_gui.run()
+'''
 # Probably most useful for comparisons.
-players = [RandomPlayer(1),RandomPlayer(2)]
+players = [player1,player2]
 player1_wins = 0
 player2_wins = 0
 
