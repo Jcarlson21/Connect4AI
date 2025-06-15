@@ -167,8 +167,4 @@ class AlphaBetaPlayer(Player):
     return None 
 
 
-player1 = AlphaBetaPlayer(1)
-player2 = AlphaBetaPlayer(2)
-game_gui = Connect4GUI(player1, player2)
-game_gui.run()
 
