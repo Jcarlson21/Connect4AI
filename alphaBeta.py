@@ -19,15 +19,6 @@ class AlphaBetaPlayer(Player):
     valid_moves = game.get_valid_moves()
 
     if depth == 0 or not valid_moves or game.game_over:
-      for col in game.get_valid_moves():
-        row = game.get_next_open_row(col)
-        temp_board = copy.deepcopy(game.board)
-        temp_board[row][col] = self.piece
-        if game.check_win(row, col):
-            return 1000000, None
-        temp_board[row][col] = self.opponent
-        if game.check_win(row, col):
-            return -1000000, None
       return self.utility(game), None
     
     if maxPlayer:
@@ -36,7 +27,8 @@ class AlphaBetaPlayer(Player):
       top_moves = []
 
       for col in valid_moves:
-        temp_game = copy.deepcopy(game)
+        temp_game = copy.copy(game)
+        temp_game.board = [row[:] for row in game.board]
         row = temp_game.get_next_open_row(col)
         temp_game.board[row][col] = self.piece
         temp_game.pieces_placed += 1
@@ -64,7 +56,8 @@ class AlphaBetaPlayer(Player):
       move = random.choice(valid_moves)
 
       for col in valid_moves:
-        temp_game = copy.deepcopy(game)
+        temp_game = copy.copy(game)
+        temp_game.board = [row[:] for row in game.board]
         row = temp_game.get_next_open_row(col)
         temp_game.board[row][col] = self.opponent
         temp_game.pieces_placed += 1
@@ -146,15 +139,11 @@ class AlphaBetaPlayer(Player):
       util += 1000000
     elif max_piece == 3 and empty == 1:
       util += 500
-    elif max_piece == 2 and empty == 2:
-      util += 10
 
     if min_piece == 4 and empty == 0:
       util -= 1000000
     elif min_piece == 3 and empty == 1:
-      util -= 800
-    elif min_piece == 2 and empty == 2:
-      util -= 15
+      util -= 1000
     
     return util
 

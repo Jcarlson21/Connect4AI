@@ -2,6 +2,9 @@ from alphaBeta import AlphaBetaPlayer
 from connect4 import Connect4GUI, Connect4Game
 from player import RandomPlayer, MousePlayer
 from dqnPlayer import DQNPlayer
+from heuristic_player import HeuristicPlayer
+from mcts import MCTSPlayer
+from alphaBeta import AlphaBetaPlayer
 
 '''
 # Uncomment this section to play against someone bad
@@ -12,8 +15,9 @@ game_gui.run()
 '''
 
 # Uncomment this section for GUI of AI vs AI
-player2 = DQNPlayer(2,"connect4_self.pth")
-player1 = RandomPlayer(1)
+#player2 = DQNPlayer(2,"connect4_self.pth")
+player2 = AlphaBetaPlayer(2)
+player1 = MCTSPlayer(1)
 
 
 for i in range(5):
