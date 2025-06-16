@@ -4,7 +4,7 @@ import random
 import copy
 
 class AlphaBetaPlayer(Player):
-  def __init__(self, piece, depth=6):
+  def __init__(self, piece, depth=7):
         super().__init__(piece)
         self.piece = piece 
         self.depth = depth
@@ -19,6 +19,20 @@ class AlphaBetaPlayer(Player):
     valid_moves = game.get_valid_moves()
 
     if depth == 0 or not valid_moves or game.game_over:
+      for col in game.get_valid_moves():
+        
+        temp_game = copy.copy(game)
+        temp_game.board = [row[:] for row in game.board]
+        row = temp_game.get_next_open_row(col)
+        temp_game.board[row][col] = self.piece
+        temp_game.pieces_placed += 1
+
+
+        if temp_game.check_win(row, col):
+            return 1000000, None
+        temp_game.board[row][col] = self.opponent
+        if temp_game.check_win(row, col):
+            return -1000000, None
       return self.utility(game), None
     
     if maxPlayer:
@@ -94,7 +108,7 @@ class AlphaBetaPlayer(Player):
     center_col = game.COLS // 2
     for r in range(game.ROWS):
         if game.board[r][center_col] == self.piece:
-            util += 10
+            util += 5
 
     # horizontal check
     for r in range(game.ROWS):
@@ -139,11 +153,15 @@ class AlphaBetaPlayer(Player):
       util += 1000000
     elif max_piece == 3 and empty == 1:
       util += 500
+    elif max_piece == 2 and empty == 2:
+      util += 20
 
     if min_piece == 4 and empty == 0:
       util -= 1000000
     elif min_piece == 3 and empty == 1:
       util -= 1000
+    elif min_piece == 2 and empty == 2:
+      util -= 30
     
     return util
 

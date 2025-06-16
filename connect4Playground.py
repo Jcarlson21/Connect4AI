@@ -17,7 +17,7 @@ game_gui.run()
 # Uncomment this section for GUI of AI vs AI
 #player2 = DQNPlayer(2,"connect4_self.pth")
 player2 = AlphaBetaPlayer(2)
-player1 = MCTSPlayer(1)
+player1 = HeuristicPlayer(1)
 
 
 for i in range(5):
