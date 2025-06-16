@@ -3,6 +3,7 @@ from player import Player, MousePlayer
 import random
 import copy
 
+# Represents an AI agent which uses minimax and alpha-beta pruning to play
 class AlphaBetaPlayer(Player):
   def __init__(self, piece, depth=7):
         super().__init__(piece)
@@ -11,10 +12,12 @@ class AlphaBetaPlayer(Player):
         self.opponent = 1 if piece == 2 else 2
         self.WINDOW_LENGTH = 4
 
+  # returns the next move
   def get_move(self, game, events):
     score, col = self.alphaBeta(game, self.depth, float('-inf'), float('inf'), True)
     return col
   
+  # runs minimax with alpha-beta pruning
   def alphaBeta(self, game, depth, alpha, beta, maxPlayer):
     valid_moves = game.get_valid_moves()
 
@@ -35,6 +38,7 @@ class AlphaBetaPlayer(Player):
             return -1000000, None
       return self.utility(game), None
     
+    # maximizing player
     if maxPlayer:
       max_util = float('-inf')
       move = random.choice(valid_moves)
@@ -65,6 +69,7 @@ class AlphaBetaPlayer(Player):
       best_moves.sort(key=lambda col: abs(col - game.COLS // 2))
       return max_util, best_moves[0]
     
+    # minimizing player
     else:
       min_util = float('inf')
       move = random.choice(valid_moves)
@@ -92,6 +97,7 @@ class AlphaBetaPlayer(Player):
 
       return min_util, move
 
+  # gets the utility of the current game board
   def utility(self, game):
     if game.game_over:
       winner = self.get_winner(game)
@@ -142,6 +148,7 @@ class AlphaBetaPlayer(Player):
 
     return util
 
+  # scores windows of 4 based on how close each player is to 4 in a row
   def check_window(self, window, piece):
     opponent_piece = piece % 2 + 1
     util = 0
@@ -165,6 +172,7 @@ class AlphaBetaPlayer(Player):
     
     return util
 
+  # returns the winner of the current board
   def get_winner(self, game):
     for r in range(game.ROWS):
         for c in range(game.COLS):

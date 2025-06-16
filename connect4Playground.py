@@ -1,4 +1,3 @@
-from alphaBeta import AlphaBetaPlayer
 from connect4 import Connect4GUI, Connect4Game
 from player import RandomPlayer, MousePlayer
 from dqnPlayer import DQNPlayer
@@ -7,25 +6,35 @@ from mcts import MCTSPlayer
 from alphaBeta import AlphaBetaPlayer
 
 '''
-# Uncomment this section to play against someone bad
-player1 = DQNPlayer(1, 'connect4_self.pth')
+# Uncomment this section to play human vs human
+player1 = MousePlayer(1)
 player2 = MousePlayer(2)
 game_gui = Connect4GUI(player1, player2)
 game_gui.run()
 '''
 
+'''
+# Uncomment this section to play human vs AI
+player1 = MousePlayer(1)
+player2 = HeuristicPlayer(2)
+game_gui = Connect4GUI(player1, player2)
+game_gui.run()
+'''
+
+'''
 # Uncomment this section for GUI of AI vs AI
-#player2 = DQNPlayer(2,"connect4_self.pth")
+player1 = MCTSPlayer(1)
 player2 = AlphaBetaPlayer(2)
+game_gui = Connect4GUI(player1, player2)
+game_gui.run()
+'''
+
+'''
+# Uncomment to run many games of the specified agents (no gui)
+
 player1 = HeuristicPlayer(1)
+player2 = AlphaBetaPlayer(2)
 
-
-for i in range(5):
-    game_gui = Connect4GUI(player1, player2)
-    game_gui.run()
-
-player1 = DQNPlayer(1,"connect4_self.pth")
-player2 = RandomPlayer(2)
 # Probably most useful for comparisons.
 players = [player1,player2]
 player1_wins = 0
@@ -48,3 +57,4 @@ for i in range(10001):
         print("player 2 wins:", player2_wins)
         print("ties:", i - player2_wins - player1_wins)
         print("\n\n")
+'''
