@@ -2,9 +2,7 @@
 
 > This is a python-based Connect4 game engine and GUI that supports both human and AI players. The implemented AI agents are: Random Agent, Minimax + alpha-beta pruning, Heuristic Search, Monte Carlo Tree Search, and Deep Q Reinforcement Learning.  
 
-## Description
-
-#### Content
+## Content
 
 In the connect4Playground you can instantiaten the following game types:
 
@@ -17,7 +15,7 @@ You can test your game playing skills against various AI Agents (listed below) o
 
 #### Available AI Agents
 
-| Player                  | Instantiation                     | 
+| Player                  | Decision Process                     | 
 | ----------------------- | --------------------------------- |
 | Random Agent            | Chooses the next move at random   |
 | Minimax + Alpha-Beta    | Uses standard minimax to a set depth |
@@ -25,17 +23,57 @@ You can test your game playing skills against various AI Agents (listed below) o
 | Monte Carlo Tree Search | Progressively builds a tree to explore optimal paths| 
 | Reinforcement Learning  | Model trained on various iterations of game play|
 
+#### File Breakdown
+
+- **alphaBeta.py:** Player class that implements the minimax algorithm with alpha beta pruning
+- **checkpoint.pth:**
+- **connect4_self.pth:**
+- **connect4.py:** Defines the connect4 game and GUI
+- **connect4Playground.py:** Central place to initialize games 
+- **dqn.py:** 
+- **dqnPlayer.py:** Player class that
+- **heuristic.py:** Player class that
+- **mcts.py:** Player class that
+- **player.py:** Holds the abstract player class that all other agents use, as well as random and mouse player
+- **traning.py:**
 
 ## How To Use
 
-In a new file or in connect4Playground.py ensure you have the following imports:
+### Requirements
 
-from connect4 import Connect4GUI, Connect4Game
-from player import RandomPlayer, MousePlayer
-from dqnPlayer import DQNPlayer
-from heuristic_player import HeuristicPlayer
-from mcts import MCTSPlayer
-from alphaBeta import AlphaBetaPlayer
+The following are required to run this game:
+
+- Python 3+ 
+- torch
+- matplotlib
+- numpy
+
+### Installation
+
+The following instructions are for saving the repository to play games locally.
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/Jcarlson21/Connect4AI.git
+   ```
+
+2. Ensure you are in the correct folder (./Connect4AI)
+
+3. Install the required packages:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Follow the steps below to choose which game play mode you would like
+
+5. Run the connect4Playground:
+   ```bash
+   python connect4Playground.py
+   ```
+
+#### Choosing the game mode
+
+The following is information for changing/editing/adding to **connect4Playground.py**.
 
 Players can be instantiated as follows, with the first argument indicating which player that agent will be: player 1 (1) or player 2 (2)
 
@@ -48,21 +86,22 @@ Players can be instantiated as follows, with the first argument indicating which
 | Monte Carlo Tree Search | MCTSPlayer(1)                     | 
 | Reinforcement Learning  | DQNPlayer(1, 'connect4_self.pth') |
 
-A single game can be run with the following:
+A single game is run with the following:
 
-player1 = DQNPlayer(1, 'connect4_self.pth')
-player2 = MousePlayer(2)
-
+``` python
 game_gui = Connect4GUI(player1, player2)
 game_gui.run()
+```
 
-- if you are using connect4Playground, there is starter code to uncomment to play various versions of games.
+Where **player1** and **player2** are instances of any of the Players defined above. 
 
-- note: the first player in the Connect4GUI instantiation should always be a player instantiated with (1)
+> ***Note:*** the first argument in the Connect4GUI instantiation should always be a player instantiated with (1)
 
-Run the file. 
+The connect4Playground has various pieces of starter code that can be uncommented to play different games. (Human vs Human, Human vs AI, etc)
 
-If you are using connect4Playground: python connect4Playground.py
+Uncomment an existing game initialization or use the script above to create your own before running the file (see instructions above).
+
+
 
 
 
