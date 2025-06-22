@@ -1,3 +1,17 @@
+"""
+Heuristic Player for Connect4
+
+This module implements a heuristic-based AI player for Connect4 that uses a weighted
+scoring system to evaluate board positions and choose optimal moves.
+
+The heuristic evaluates:
+- Immediate winning opportunities (4 in a row)
+- Three-in-a-row threats with one empty space
+- Two-in-a-row opportunities with two empty spaces
+- Center control bonus
+- Opponent threat assessment
+"""
+
 import random
 import copy
 from player import Player

@@ -3,40 +3,50 @@ from player import Player, MousePlayer
 import random
 import copy
 
+# Represents an AI agent which uses minimax and alpha-beta pruning to play
 class AlphaBetaPlayer(Player):
-  def __init__(self, piece, depth=6):
+  def __init__(self, piece, depth=7):
         super().__init__(piece)
         self.piece = piece 
         self.depth = depth
         self.opponent = 1 if piece == 2 else 2
         self.WINDOW_LENGTH = 4
 
+  # returns the next move
   def get_move(self, game, events):
     score, col = self.alphaBeta(game, self.depth, float('-inf'), float('inf'), True)
     return col
   
+  # runs minimax with alpha-beta pruning
   def alphaBeta(self, game, depth, alpha, beta, maxPlayer):
     valid_moves = game.get_valid_moves()
 
     if depth == 0 or not valid_moves or game.game_over:
       for col in game.get_valid_moves():
-        row = game.get_next_open_row(col)
-        temp_board = copy.deepcopy(game.board)
-        temp_board[row][col] = self.piece
-        if game.check_win(row, col):
+        
+        temp_game = copy.copy(game)
+        temp_game.board = [row[:] for row in game.board]
+        row = temp_game.get_next_open_row(col)
+        temp_game.board[row][col] = self.piece
+        temp_game.pieces_placed += 1
+
+
+        if temp_game.check_win(row, col):
             return 1000000, None
-        temp_board[row][col] = self.opponent
-        if game.check_win(row, col):
+        temp_game.board[row][col] = self.opponent
+        if temp_game.check_win(row, col):
             return -1000000, None
       return self.utility(game), None
     
+    # maximizing player
     if maxPlayer:
       max_util = float('-inf')
       move = random.choice(valid_moves)
       top_moves = []
 
       for col in valid_moves:
-        temp_game = copy.deepcopy(game)
+        temp_game = copy.copy(game)
+        temp_game.board = [row[:] for row in game.board]
         row = temp_game.get_next_open_row(col)
         temp_game.board[row][col] = self.piece
         temp_game.pieces_placed += 1
@@ -59,12 +69,14 @@ class AlphaBetaPlayer(Player):
       best_moves.sort(key=lambda col: abs(col - game.COLS // 2))
       return max_util, best_moves[0]
     
+    # minimizing player
     else:
       min_util = float('inf')
       move = random.choice(valid_moves)
 
       for col in valid_moves:
-        temp_game = copy.deepcopy(game)
+        temp_game = copy.copy(game)
+        temp_game.board = [row[:] for row in game.board]
         row = temp_game.get_next_open_row(col)
         temp_game.board[row][col] = self.opponent
         temp_game.pieces_placed += 1
@@ -85,6 +97,7 @@ class AlphaBetaPlayer(Player):
 
       return min_util, move
 
+  # gets the utility of the current game board
   def utility(self, game):
     if game.game_over:
       winner = self.get_winner(game)
@@ -101,7 +114,7 @@ class AlphaBetaPlayer(Player):
     center_col = game.COLS // 2
     for r in range(game.ROWS):
         if game.board[r][center_col] == self.piece:
-            util += 10
+            util += 5
 
     # horizontal check
     for r in range(game.ROWS):
@@ -135,6 +148,7 @@ class AlphaBetaPlayer(Player):
 
     return util
 
+  # scores windows of 4 based on how close each player is to 4 in a row
   def check_window(self, window, piece):
     opponent_piece = piece % 2 + 1
     util = 0
@@ -147,17 +161,18 @@ class AlphaBetaPlayer(Player):
     elif max_piece == 3 and empty == 1:
       util += 500
     elif max_piece == 2 and empty == 2:
-      util += 10
+      util += 20
 
     if min_piece == 4 and empty == 0:
       util -= 1000000
     elif min_piece == 3 and empty == 1:
-      util -= 800
+      util -= 1000
     elif min_piece == 2 and empty == 2:
-      util -= 15
+      util -= 30
     
     return util
 
+  # returns the winner of the current board
   def get_winner(self, game):
     for r in range(game.ROWS):
         for c in range(game.COLS):
