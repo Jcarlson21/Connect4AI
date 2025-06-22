@@ -1,6 +1,6 @@
 import pygame
 import sys
-
+import time
 from player import MousePlayer, RandomPlayer
 
 
@@ -14,6 +14,7 @@ class Connect4Game:
         self.turn = 0
         self.MAX = self.ROWS * self.COLS
         self.pieces_placed = 0
+        self.winner = False
 
     def is_valid_move(self, col):
         return self.board[0][col] == 0
@@ -62,6 +63,7 @@ class Connect4Game:
         for dr, dc in directions:
             total = 1 + count_direction(dr, dc) + count_direction(-dr, -dc)
             if total >= 4:
+                self.winner = True
                 return True
         return False
 
@@ -132,9 +134,7 @@ class Connect4GUI:
                         self.game_over = True
 
                 # Add a small delay for AI moves
-                if isinstance(self.players[self.game.turn], RandomPlayer) and not self.game_over:
-                    pygame.time.wait(200)
-
+                pygame.time.wait(200)
             else:
                 pygame.display.update()
                 pygame.time.wait(3000)
@@ -143,6 +143,51 @@ class Connect4GUI:
 
             clock.tick(60)
 
+class Connect4GUI2:
+    WHITE = (255, 255, 255)
+    BLACK = (0, 0, 0)
+    BLUE = (0, 0, 255)
+    RED = (255, 0, 0)
+    YELLOW = (255, 255, 0)
+    SQUARESIZE = 100
+    WIDTH = 7 * SQUARESIZE
+    HEIGHT = (6 + 1) * SQUARESIZE  # extra row for dropping piece
+    RADIUS = int(SQUARESIZE / 2 - 5)
+
+    def __init__(self):
+        pygame.init()
+        self.screen = pygame.display.set_mode((self.WIDTH, self.HEIGHT))
+        pygame.display.set_caption("Connect Four")
+        self.font = pygame.font.SysFont("monospace", 75)
+        self.clock = pygame.time.Clock()
+        self.running = True
+        self.board = [[0 for _ in range(7)] for _ in range(6)]
+
+    def draw(self, board):
+        self.board = board
+        self._render()
+
+    def _render(self):
+        self.screen.fill((255, 255, 255))
+        for c in range(7):
+            for r in range(6):
+                pygame.draw.rect(self.screen, self.BLUE, (c * self.SQUARESIZE, (r + 1) * self.SQUARESIZE, self.SQUARESIZE, self.SQUARESIZE))
+                color = self.WHITE
+                piece = self.board[r][c]
+                if piece == 1:
+                    color = self.RED
+                elif piece == 2:
+                    color = self.YELLOW
+                pygame.draw.circle(self.screen, color, (int(c * self.SQUARESIZE + self.SQUARESIZE / 2), int((r + 1) * self.SQUARESIZE + self.SQUARESIZE / 2)), self.RADIUS)
+        pygame.display.flip()
+    
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.running = False
+            self.clock.tick(30)  # Keeps window responsive, 30 FPS
+        pygame.quit()
 
 if __name__ == "__main__":
     # Examples of any combination of players:
