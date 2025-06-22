@@ -1,10 +1,10 @@
-# Connect4 AI Tournment
+# Connect4 AI Tournament
 
 > This is a python-based Connect4 game engine and GUI that supports both human and AI players. The implemented AI agents are: Random Agent, Minimax + alpha-beta pruning, Heuristic Search, Monte Carlo Tree Search, and Deep Q Reinforcement Learning.  
 
 ## Content
 
-In the connect4Playground you can instantiaten the following game types:
+In the connect4Playground you can instantiate the following game types:
 
 1. Human v Human 
 2. Human v AI
@@ -26,16 +26,16 @@ You can test your game playing skills against various AI Agents (listed below) o
 #### File Breakdown
 
 - **alphaBeta.py:** Player class that implements the minimax algorithm with alpha beta pruning
-- **checkpoint.pth:**
-- **connect4_self.pth:**
+- **checkpoint.pth:** Saved model checkpoint for the DQN reinforcement learning agent
+- **connect4_self.pth:** Trained model weights for the DQN reinforcement learning agent
 - **connect4.py:** Defines the connect4 game and GUI
 - **connect4Playground.py:** Central place to initialize games 
-- **dqn.py:** 
-- **dqnPlayer.py:** Player class that
-- **heuristic.py:** Player class that
-- **mcts.py:** Player class that
+- **dqn.py:** Deep Q-Network implementation for reinforcement learning
+- **dqnPlayer.py:** Player class that uses the trained DQN model to make decisions
+- **heuristic_player.py:** Player class that uses heuristic evaluation to choose optimal moves
+- **mcts.py:** Player class that implements Monte Carlo Tree Search algorithm
 - **player.py:** Holds the abstract player class that all other agents use, as well as random and mouse player
-- **traning.py:**
+- **training.py:** Script for training the DQN reinforcement learning model
 
 ## How To Use
 
@@ -44,6 +44,7 @@ You can test your game playing skills against various AI Agents (listed below) o
 The following are required to run this game:
 
 - Python 3+ 
+- pygame
 - torch
 - matplotlib
 - numpy
@@ -100,6 +101,24 @@ Where **player1** and **player2** are instances of any of the Players defined ab
 The connect4Playground has various pieces of starter code that can be uncommented to play different games. (Human vs Human, Human vs AI, etc)
 
 Uncomment an existing game initialization or use the script above to create your own before running the file (see instructions above).
+
+## AI Agent Details
+
+### Heuristic Agent
+Uses a weighted scoring system to evaluate board positions and choose optimal moves based on immediate threats and opportunities.
+
+### Minimax with Alpha-Beta Pruning
+Uses the minimax algorithm with alpha-beta pruning to look ahead several moves and choose the optimal strategy.
+
+### Monte Carlo Tree Search (MCTS)
+Builds a search tree progressively by balancing exploration and exploitation to find the best move.
+
+### Deep Q-Network (DQN)
+A reinforcement learning agent trained through self-play to learn optimal Connect4 strategies.
+
+## Contributing
+
+This project demonstrates various AI algorithms for game playing. Feel free to experiment with different parameters, add new AI agents, or improve existing implementations.
 
 
 
